@@ -11,11 +11,14 @@ public class ShipEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
 
     private String name;
     private String planet;
+
+    @Enumerated(EnumType.STRING)
     private ShipType shipType;
     private Date prodDate;
     private Boolean isUsed;

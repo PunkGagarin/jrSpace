@@ -20,7 +20,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("com.space.service")
-@EnableJpaRepositories(basePackages = "com.space.model.repository")
+@EnableJpaRepositories(basePackages = "com.space.repository")
 public class TestDataSourceConfig {
 
     @Bean
@@ -64,6 +64,7 @@ public class TestDataSourceConfig {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "none");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        properties.setProperty("hibernate.show_sql","true");
 
         return properties;
     }
