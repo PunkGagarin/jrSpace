@@ -14,16 +14,22 @@ public class ShipEntity {
     @Column(name = "id")
     private Long id;
 
-
+    @Column(name = "name", length = 50)
     private String name;
+
+    @Column(name = "planet", length = 50)
     private String planet;
 
     @Enumerated(EnumType.STRING)
     private ShipType shipType;
     private Date prodDate;
     private Boolean isUsed;
+
+    @Column(name = "speed", precision = 2)
     private Double speed;
     private Integer crewSize;
+
+    @Column(name = "rating",precision = 2)
     private Double rating;
 
 
