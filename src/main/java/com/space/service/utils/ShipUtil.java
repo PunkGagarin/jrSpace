@@ -1,6 +1,6 @@
 package com.space.service.utils;
 
-import com.space.model.entity.ShipEntity;
+import com.space.model.ShipEntity;
 import org.springframework.stereotype.Component;
 
 @Component

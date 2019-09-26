@@ -1,4 +1,4 @@
-package com.space.model.entity;
+package com.space.model;
 
 import com.space.model.ShipType;
 

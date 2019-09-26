@@ -1,6 +1,6 @@
 package com.space.service;
 
-import com.space.model.entity.ShipEntity;
+import com.space.model.ShipEntity;
 
 import java.util.List;
 

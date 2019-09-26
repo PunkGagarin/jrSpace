@@ -1,7 +1,7 @@
 package com.space.service.utils;
 
 import com.space.controller.utils.TestDataSourceConfig;
-import com.space.model.entity.ShipEntity;
+import com.space.model.ShipEntity;
 import com.space.repository.ShipRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;

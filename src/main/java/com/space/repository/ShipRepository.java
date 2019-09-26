@@ -1,6 +1,6 @@
 package com.space.repository;
 
-import com.space.model.entity.ShipEntity;
+import com.space.model.ShipEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

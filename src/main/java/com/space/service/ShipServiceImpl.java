@@ -1,6 +1,6 @@
 package com.space.service;
 
-import com.space.model.entity.ShipEntity;
+import com.space.model.ShipEntity;
 import com.space.repository.ShipRepository;
 import com.space.service.utils.ShipUtil;
 import org.springframework.beans.factory.annotation.Autowired;

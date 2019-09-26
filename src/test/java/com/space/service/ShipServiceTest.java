@@ -2,7 +2,7 @@ package com.space.service;
 
 
 import com.space.controller.utils.TestDataSourceConfig;
-import com.space.model.entity.ShipEntity;
+import com.space.model.ShipEntity;
 import com.space.service.utils.ShipUtil;
 import org.junit.Assert;
 import org.junit.Test;

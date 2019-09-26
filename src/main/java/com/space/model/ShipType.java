@@ -1,6 +1,6 @@
 package com.space.model;
 
-public enum     ShipType {
+public enum ShipType {
     TRANSPORT,
     MILITARY,
     MERCHANT
