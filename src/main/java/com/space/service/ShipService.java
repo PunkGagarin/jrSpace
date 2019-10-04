@@ -1,6 +1,8 @@
 package com.space.service;
 
 import com.space.model.ShipEntity;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -10,8 +12,16 @@ public interface ShipService {
 
     List<ShipEntity> findAll();
 
-    void updateShip(ShipEntity shipEntity);
+    List<ShipEntity> findAll(Pageable pageable);
 
-    void deleteShip(ShipEntity entity);
+    List<ShipEntity> findAll(Specification<ShipEntity> spec, Pageable pageable);
+
+    ShipEntity updateShip(Long id, ShipEntity shipEntit);
+
+    void createShip(ShipEntity shipEntity);
+
+    void deleteShip(Long id);
+
+    long getShipsCount();
 
 }
