@@ -1,16 +1,22 @@
 package com.space.model;
 
-import com.space.model.ShipType;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(schema = "cosmoport", name = "ship")
 public class ShipEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY )
     @Column(name = "id")
     private Long id;
 
@@ -133,5 +139,26 @@ public class ShipEntity {
                 ", crewSize=" + crewSize +
                 ", rating=" + rating +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ShipEntity)) return false;
+        ShipEntity that = (ShipEntity) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(planet, that.planet) &&
+                shipType == that.shipType &&
+                Objects.equals(prodDate, that.prodDate) &&
+                Objects.equals(isUsed, that.isUsed) &&
+                Objects.equals(speed, that.speed) &&
+                Objects.equals(crewSize, that.crewSize) &&
+                Objects.equals(rating, that.rating);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, planet, shipType, prodDate, isUsed, speed, crewSize, rating);
     }
 }

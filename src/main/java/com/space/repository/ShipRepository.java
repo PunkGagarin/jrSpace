@@ -2,9 +2,8 @@ package com.space.repository;
 
 import com.space.model.ShipEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-@Repository
-public interface ShipRepository extends JpaRepository<ShipEntity, Long> {
+public interface ShipRepository extends JpaRepository<ShipEntity, Long>, JpaSpecificationExecutor<ShipEntity> {
 
 }
