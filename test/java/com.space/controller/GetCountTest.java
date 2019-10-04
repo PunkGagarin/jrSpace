@@ -178,7 +178,7 @@ public class GetCountTest {
                         testsHelper.getShipInfosByMaxSpeed(0.6,
                                 testsHelper.getAllShips()))).size();
 
-        assertTrue("Возвращается не правильный результат при запросе GET /rest/ships/count с параметрами isUsed, minSpeed и maxSpeed.", actual == expected);
+        assertTrue("Во звращается не правильный результат при запросе GET /rest/ships/count с параметрами isUsed, minSpeed и maxSpeed.", actual == expected);
     }
 
     @Autowired

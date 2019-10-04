@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -45,6 +46,7 @@ public class CreateShipTest {
         expected = new ShipInfoTest(41L, "123456789", "Earth", ShipType.MILITARY, 32998274577071L, true, 0.8, 14, 6.4);
     }
 
+    // .andDo(MockMvcResultHandlers.print())
     //test1
     @Test
     public void createShipEmptyBodyTest() throws Exception {

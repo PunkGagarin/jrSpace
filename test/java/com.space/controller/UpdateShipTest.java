@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -84,7 +85,8 @@ public class UpdateShipTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .content(TestsHelper.NEGATIVE_PROD_DATE_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andDo(MockMvcResultHandlers.print());
     }
 
     //test5
@@ -96,7 +98,8 @@ public class UpdateShipTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .content(TestsHelper.TOO_BIG_CREW_SIZE_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+        ;
     }
 
     //test6
@@ -157,7 +160,8 @@ public class UpdateShipTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .content(String.format(TestsHelper.NORMAL_JSON_WITH_RATING, "9")))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print());
 
         String contentAsString = resultActions.andReturn().getResponse().getContentAsString();
         ShipInfoTest actual = mapper.readValue(contentAsString, ShipInfoTest.class);
@@ -182,7 +186,8 @@ public class UpdateShipTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .content(String.format(TestsHelper.JSON_SKELETON, newName, String.valueOf(newIsUsed), String.valueOf(newSpeed), String.valueOf(newCrewSize))))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print());
 
         String contentAsString = resultActions.andReturn().getResponse().getContentAsString();
         ShipInfoTest actual = mapper.readValue(contentAsString, ShipInfoTest.class);
@@ -206,7 +211,8 @@ public class UpdateShipTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .content(String.format(TestsHelper.JSON_SKELETON_2, newPlanet, String.valueOf(newShipType), String.valueOf(newProdDate))))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(MockMvcResultHandlers.print());
 
         String contentAsString = resultActions.andReturn().getResponse().getContentAsString();
         ShipInfoTest actual = mapper.readValue(contentAsString, ShipInfoTest.class);
