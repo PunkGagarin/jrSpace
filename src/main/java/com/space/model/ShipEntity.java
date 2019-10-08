@@ -1,5 +1,7 @@
 package com.space.model;
 
+import com.space.validation.DateBetween;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,6 +10,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Objects;
 
@@ -16,26 +26,46 @@ import java.util.Objects;
 public class ShipEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @Positive
     private Long id;
 
+    @Size(max = 50)
     @Column(name = "name", length = 50)
+    @NotEmpty(message = "Ship name cannot be empty")
+    @NotNull
     private String name;
 
+    @Size(max = 50)
     @Column(name = "planet", length = 50)
+    @NotEmpty(message = "Ship planet cannot be empty")
+    @NotNull
     private String planet;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private ShipType shipType;
+
+    @NotNull
+    @DateBetween(minYear = 2800, maxYear = 3019)
     private Date prodDate;
+
+
     private Boolean isUsed;
 
+    @DecimalMin("0.01")
+    @DecimalMax("0.99")
     @Column(name = "speed", precision = 2)
+    @NotNull
     private Double speed;
+
+    @Min(1)
+    @Max(9999)
+    @NotNull
     private Integer crewSize;
 
-    @Column(name = "rating",precision = 2)
+    @Column(name = "rating", precision = 2)
     private Double rating;
 
 

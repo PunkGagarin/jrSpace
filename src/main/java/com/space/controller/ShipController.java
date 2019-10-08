@@ -6,10 +6,15 @@ import com.space.service.ShipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+
+import static com.space.service.utils.ShipSpecificationBuilder.*;
 
 @Controller
 @ResponseBody // можно заменить эти 2 аннотации на @RestController
@@ -40,8 +45,21 @@ public class ShipController {
                                      @RequestParam(value = "pageSize", required = false, defaultValue = "3") Integer pageSize) {
 
 
-
-        return shipService.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(order.getFieldName())));
+        return shipService.findAll(Specification
+                        .where(stringSpec("name", name)
+                                .and(stringSpec("planet", planet))
+                                .and(shipTypeSpec(shipType))
+                                .and(prodDateSpec(after, true))
+                                .and(prodDateSpec(before, false))
+                                .and(intSpec("crewSize", minCrewSize, true))
+                                .and(intSpec("crewSize", maxCrewSize, false))
+                                .and(doubleSpec("speed", minSpeed, true))
+                                .and(doubleSpec("speed", maxSpeed, false))
+                                .and(doubleSpec("rating", minRating, true))
+                                .and(doubleSpec("rating", maxRating, false))
+                                .and(isUsedSpec(isUsed))
+                        ),
+                PageRequest.of(pageNumber, pageSize, Sort.by(order.getFieldName())));
     }
 
     //2 получаем кол-во всех кораблей или всех кораблей с заданными параметрами GET
@@ -60,14 +78,28 @@ public class ShipController {
                               @RequestParam(value = "maxRating", required = false) Double maxRating) {
 
 
-        return shipService.getShipsCount();
+        return shipService.getShipsCount(Specification
+                .where(stringSpec("name", name)
+                        .and(stringSpec("planet", planet))
+                        .and(shipTypeSpec(shipType))
+                        .and(prodDateSpec(after, true))
+                        .and(prodDateSpec(before, false))
+                        .and(intSpec("crewSize", minCrewSize, true))
+                        .and(intSpec("crewSize", maxCrewSize, false))
+                        .and(doubleSpec("speed", minSpeed, true))
+                        .and(doubleSpec("speed", maxSpeed, false))
+                        .and(doubleSpec("rating", minRating, true))
+                        .and(doubleSpec("rating", maxRating, false))
+                        .and(isUsedSpec(isUsed))
+                ));
     }
 
     //3 создаём корабль, POST
     @PostMapping("/ships")
-    public void createShip(@RequestBody ShipEntity shipEntity) {
+    @ResponseBody
+    public ShipEntity createShip(@RequestBody @Valid ShipEntity shipEntity) {
 
-        shipService.createShip(shipEntity);
+        return shipService.createShip(shipEntity);
     }
 
     //4 Получаем корабль по ID GET
@@ -80,14 +112,14 @@ public class ShipController {
 
     //5 Обновляем корабль по ID POST
     @PostMapping("/ships/{id}")
-    public ShipEntity updateShip( @PathVariable Long id, @RequestBody ShipEntity shipEntity) {
+    public ShipEntity updateShip(@PathVariable Long id, @RequestBody ShipEntity shipEntity) {
 
-       return shipService.updateShip(id, shipEntity);
+        return shipService.updateShip(id, shipEntity);
     }
 
     //6 Удаляем корабль
     @DeleteMapping("/ships/{id}")
-    public void deleteShip(@PathVariable Long id){
+    public void deleteShip(@PathVariable Long id) {
         shipService.deleteShip(id);
     }
 }

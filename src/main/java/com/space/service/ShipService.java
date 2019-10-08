@@ -18,10 +18,10 @@ public interface ShipService {
 
     ShipEntity updateShip(Long id, ShipEntity shipEntit);
 
-    void createShip(ShipEntity shipEntity);
+    ShipEntity createShip(ShipEntity shipEntity);
 
     void deleteShip(Long id);
 
-    long getShipsCount();
+    long getShipsCount(Specification<ShipEntity> spec);
 
 }

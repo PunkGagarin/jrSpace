@@ -3,6 +3,9 @@ package com.space.service.utils;
 import com.space.model.ShipEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 @Component
 public class ShipUtil {
 
@@ -12,11 +15,16 @@ public class ShipUtil {
 
     public static double calculateShipRating(ShipEntity entity){
 
-        double usedShipCoef = entity.getUsed() == null ? 1 : (!entity.getUsed() ? 0.5 : 1);
-        //TODO: use Calendar class instead of deprecated.
-        int prodDate = entity.getProdDate().getYear() ;
+        boolean isUsed = entity.getUsed();
 
-        return Math.round((entity.getSpeed() * 80 *usedShipCoef)/(3019 - prodDate + 1) * 100)/100.0;
+        //true = 0.5
+        double usedShipCoef = isUsed ? 0.5 : 1;
+
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(entity.getProdDate());
+        int prodYear = calendar.get(Calendar.YEAR);
+
+        return Math.round((entity.getSpeed() * 80 *usedShipCoef)/(3019 - prodYear + 1) * 100)/100.0;
     }
 
     public static ShipEntity refreshShipRating(ShipEntity entity){

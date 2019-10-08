@@ -12,8 +12,8 @@ public @interface DateBetween {
 
     String message() default "Invalid date";
 
-    int min();
-    int max();
+    int minYear() default 0;
+    int maxYear() default Integer.MAX_VALUE;
 
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

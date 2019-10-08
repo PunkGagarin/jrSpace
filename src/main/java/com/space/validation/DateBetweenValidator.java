@@ -13,12 +13,15 @@ public class DateBetweenValidator implements ConstraintValidator<DateBetween, Da
 
     @Override
     public void initialize(DateBetween constraintAnnotation) {
-        minYear = constraintAnnotation.min();
-        maxYear = constraintAnnotation.max();
+        minYear = constraintAnnotation.minYear();
+        maxYear = constraintAnnotation.maxYear();
     }
 
     @Override
     public boolean isValid(Date value, ConstraintValidatorContext context) {
+        if(value == null)
+            return false;
+
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(value);
 

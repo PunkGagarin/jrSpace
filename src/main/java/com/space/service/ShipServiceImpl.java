@@ -44,8 +44,11 @@ public class ShipServiceImpl implements ShipService {
     }
 
     @Override
-    public void createShip(ShipEntity shipEntity) {
-        shipRepository.save(ShipUtil.refreshShipRating(shipEntity));
+    public ShipEntity createShip(ShipEntity shipEntity) {
+        if(shipEntity.getUsed() == null)
+            shipEntity.setUsed(false);
+
+       return shipRepository.save(ShipUtil.refreshShipRating(shipEntity));
     }
 
     @Override
@@ -54,13 +57,13 @@ public class ShipServiceImpl implements ShipService {
     }
 
     @Override
-    public long getShipsCount() {
-        return shipRepository.count();
+    public long getShipsCount(Specification<ShipEntity> spec) {
+        return shipRepository.count(spec);
     }
 
     @Override
     public ShipEntity updateShip(Long id, ShipEntity shipEntity) {
-        return shipRepository.save(shipEntity);
+        return shipRepository.save(ShipUtil.refreshShipRating(shipEntity));
     }
 
 
