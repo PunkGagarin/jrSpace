@@ -3,6 +3,7 @@ package com.space.service.utils;
 import com.space.controller.utils.TestDataSourceConfig;
 import com.space.model.ShipEntity;
 import com.space.repository.ShipRepository;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,11 @@ public class ShipUtilTest {
     private ShipRepository shipRepository;
 
     @Test
-    public void testCalculateShipRating(){
-        ShipEntity entity =  shipRepository.findAll().get(0);
+    public void testCalculateShipRating() {
+        ShipEntity entity = shipRepository.findAll().get(0);
+        Double oldRating = entity.getRating();
+        entity.setSpeed(entity.getSpeed() + 0.10);
 
-        System.out.println(ShipUtil.calculateShipRating(entity));
-
+        Assert.assertNotEquals(oldRating, ShipUtil.calculateShipRating(entity));
     }
-
 }

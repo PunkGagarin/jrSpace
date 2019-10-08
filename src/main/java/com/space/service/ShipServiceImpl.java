@@ -4,14 +4,14 @@ import com.space.model.ShipEntity;
 import com.space.repository.ShipRepository;
 import com.space.service.utils.ShipUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Transactional
@@ -23,9 +23,10 @@ public class ShipServiceImpl implements ShipService {
 
     @Override
     public ShipEntity getShip(Long id) {
-        Optional<ShipEntity> ship = shipRepository.findById(id);
+        if (!shipRepository.existsById(id))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        return ship.get();
+        return shipRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -45,14 +46,17 @@ public class ShipServiceImpl implements ShipService {
 
     @Override
     public ShipEntity createShip(ShipEntity shipEntity) {
-        if(shipEntity.getUsed() == null)
+        if (shipEntity.getUsed() == null)
             shipEntity.setUsed(false);
 
-       return shipRepository.save(ShipUtil.refreshShipRating(shipEntity));
+        return shipRepository.save(ShipUtil.refreshShipRating(shipEntity));
     }
 
     @Override
     public void deleteShip(Long id) {
+        if (!shipRepository.existsById(id))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
         shipRepository.deleteById(id);
     }
 
@@ -63,8 +67,32 @@ public class ShipServiceImpl implements ShipService {
 
     @Override
     public ShipEntity updateShip(Long id, ShipEntity shipEntity) {
-        return shipRepository.save(ShipUtil.refreshShipRating(shipEntity));
+        if (!shipRepository.existsById(id))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+
+        ShipEntity oldShip = shipRepository.getOne(id);
+
+        if (shipEntity.getName() != null)
+            oldShip.setName(shipEntity.getName());
+
+        if (shipEntity.getPlanet() != null)
+            oldShip.setPlanet(shipEntity.getPlanet());
+
+        if (shipEntity.getShipType() != null)
+            oldShip.setShipType(shipEntity.getShipType());
+
+        if (shipEntity.getProdDate() != null)
+            oldShip.setProdDate(shipEntity.getProdDate());
+
+        if (shipEntity.getUsed() != null)
+            oldShip.setUsed(shipEntity.getUsed());
+
+        if (shipEntity.getSpeed() != null)
+            oldShip.setSpeed(shipEntity.getSpeed());
+
+        if (shipEntity.getCrewSize() != null)
+            oldShip.setCrewSize(shipEntity.getCrewSize());
+
+        return shipRepository.save(ShipUtil.refreshShipRating(oldShip));
     }
-
-
 }

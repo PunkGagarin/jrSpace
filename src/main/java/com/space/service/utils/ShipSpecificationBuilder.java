@@ -11,7 +11,7 @@ public class ShipSpecificationBuilder {
     // https://www.w3schools.com/sql/sql_like.asp
     public static Specification<ShipEntity> stringSpec(String attribute, String value) {
         return (root, query, criteriaBuilder) ->
-                value == null ? null : criteriaBuilder.like(root.get(attribute), "%"+value+"%");
+                value == null ? null : criteriaBuilder.like(root.get(attribute), "%" + value + "%");
     }
 
 

@@ -29,6 +29,7 @@ public class ShipEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Positive
+    @Min(1L)
     private Long id;
 
     @Size(max = 50)

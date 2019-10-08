@@ -10,11 +10,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
 
 import static com.space.service.utils.ShipSpecificationBuilder.*;
+import static com.space.service.utils.ShipUtil.isIdValid;
 
 @Controller
 @ResponseBody // можно заменить эти 2 аннотации на @RestController
@@ -25,7 +27,6 @@ public class ShipController {
     @Autowired
     private ShipService shipService;
 
-    //1 Получаем список всех кораблей или всех кораблей по филтрам, GET
     @GetMapping("/ships")
     @ResponseBody
     public List<ShipEntity> getShips(@RequestParam(value = "name", required = false) String name,
@@ -62,7 +63,6 @@ public class ShipController {
                 PageRequest.of(pageNumber, pageSize, Sort.by(order.getFieldName())));
     }
 
-    //2 получаем кол-во всех кораблей или всех кораблей с заданными параметрами GET
     @GetMapping("/ships/count")
     public long getShipsCount(@RequestParam(value = "name", required = false) String name,
                               @RequestParam(value = "planet", required = false) String planet,
@@ -94,7 +94,6 @@ public class ShipController {
                 ));
     }
 
-    //3 создаём корабль, POST
     @PostMapping("/ships")
     @ResponseBody
     public ShipEntity createShip(@RequestBody @Valid ShipEntity shipEntity) {
@@ -106,20 +105,36 @@ public class ShipController {
     @GetMapping("/ships/{id}")
     @ResponseBody
     public ShipEntity getShip(@PathVariable Long id) {
+        if (!isIdValid(id))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         return shipService.getShip(id);
     }
 
-    //5 Обновляем корабль по ID POST
     @PostMapping("/ships/{id}")
     public ShipEntity updateShip(@PathVariable Long id, @RequestBody ShipEntity shipEntity) {
 
-        return shipService.updateShip(id, shipEntity);
+        ShipEntity updatedShip;
+
+        if (!isIdValid(id))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        try {
+            updatedShip = shipService.updateShip(id, shipEntity);
+        } catch (Exception e) {
+            if (e instanceof ResponseStatusException)
+                throw e;
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+        return updatedShip;
     }
 
-    //6 Удаляем корабль
     @DeleteMapping("/ships/{id}")
     public void deleteShip(@PathVariable Long id) {
+        if (!isIdValid(id))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
         shipService.deleteShip(id);
     }
 }

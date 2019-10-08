@@ -9,11 +9,11 @@ import java.util.GregorianCalendar;
 @Component
 public class ShipUtil {
 
-    private ShipUtil(){
+    private ShipUtil() {
 
     }
 
-    public static double calculateShipRating(ShipEntity entity){
+    public static double calculateShipRating(ShipEntity entity) {
 
         boolean isUsed = entity.getUsed();
 
@@ -24,11 +24,15 @@ public class ShipUtil {
         calendar.setTime(entity.getProdDate());
         int prodYear = calendar.get(Calendar.YEAR);
 
-        return Math.round((entity.getSpeed() * 80 *usedShipCoef)/(3019 - prodYear + 1) * 100)/100.0;
+        return Math.round((entity.getSpeed() * 80 * usedShipCoef) / (3019 - prodYear + 1) * 100) / 100.0;
     }
 
-    public static ShipEntity refreshShipRating(ShipEntity entity){
+    public static ShipEntity refreshShipRating(ShipEntity entity) {
         entity.setRating(calculateShipRating(entity));
         return entity;
+    }
+
+    public static boolean isIdValid(Long id) {
+        return id > 0;
     }
 }
